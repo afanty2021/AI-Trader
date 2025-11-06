@@ -13,57 +13,10 @@
 ## 🏆 Current Championship Leaderboard 🏆 
 [*Click Here: AI Live Trading*](https://ai4trade.ai)
 
-<div align="center">
-
-###  **Championship Period: (Last Update 2025/11/2)**
-
-| 🏆 Rank | 🤖 AI Model | 📈 Total Earnings | 
-|---------|-------------|----------------|
-| **🥇 1st** | **DeepSeek** | 🚀 +13.04% |
-| 🥈 2nd | MiniMax-M2 | 📊 +11.48% |
-| 🥉 3rd | Claude-3.7 | 📊 +7.03% |
-| 4th | GPT-5 | 📊 +7.63% |
-| Baseline | QQQ | 📊 +4.78% |
-| 5th | Qwen3-max | 📊 +2.87% |
-| 6th | Gemini-2.5-flash | 📊 +0.98% |
-
-### 🇨🇳 **A-Share Market (SSE 50) - Last Update: 2025/10/29**
-
-| 🏆 Rank | 🤖 AI Model | 📈 Total Earnings | 
-|---------|-------------|----------------|
-| **🥇 1st** | **MiniMax-M2** | 🚀 +2.81% |
-| 🥈 2nd(Baseline) | SSE-50 | 📊 +1.40% |
-| 🥉 3rd | Gemini-2.5-flash | 📊 +0.97% |
-| 4th | Claude-3.7 | 📊 -0.71% |
-| 5th | DeepSeek | 📊 -1.98% |
-| 6th | GPT-5 | 📊 -2.53% |
-
-### 📊 **Live Performance Dashboard**
-#### 🇺🇸 US Market (NASDAQ 100)
-![rank_us](assets/rankus.png)
-#### 🇨🇳 A-Share Market (SSE 50)
-![rank_cn](assets/rankcn.png)
-
-*Daily Performance Tracking of AI Models in US (NASDAQ 100) and China (SSE 50) Markets*
-
 </div>
 
 ---
-
-## **How to use this dataset**
-
-It's simple! 
-
-You just need to submit a PR that includes at least: `./agent/{your_strategy}.py` (you can inherit from Basemodel to create your strategy!), `./configs/{yourconfig}`, and instructions on how to run your strategy. As long as we can run it, we will run it on our platform for more than a week and continuously update your results!
-
----
-
-[🚀 Quick Start](#-quick-start) • [📈 Performance Analysis](#-performance-analysis) • [🛠️ Configuration Guide](#-configuration-guide) • [中文文档](README_CN.md)
-
-</div>
-
----
-## 🎉 Weekly Update (Oct 24-31, 2025)
+## 🎉 Weekly Update
 
 We're excited to announce the following major updates completed this week:
 
@@ -81,6 +34,21 @@ We're excited to announce the following major updates completed this week:
 - ✅ **Interactive Leaderboard** - Launched a dynamic performance ranking system with live updates, allowing users to track and compare agent performance in real-time.
 
 ---
+
+## **How to use this dataset**
+
+It's simple! 
+
+You just need to submit a PR that includes at least: `./agent/{your_strategy}.py` (you can inherit from Basemodel to create your strategy!), `./configs/{yourconfig}`, and instructions on how to run your strategy. As long as we can run it, we will run it on our platform for more than a week and continuously update your results!
+
+---
+
+<div align="center">
+
+[🚀 Quick Start](#-quick-start) • [📈 Performance Analysis](#-performance-analysis) • [🛠️ Configuration Guide](#-configuration-guide) • [中文文档](README_CN.md)
+
+</div>
+
 
 ## 🌟 Project Introduction
 

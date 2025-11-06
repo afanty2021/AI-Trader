@@ -1,12 +1,4 @@
 {
-    "Meta Data": {
-        "1. Information": "Intraday (60min) open, high, low, close prices and volume - DATA DELAYED BY 15 MINUTES",
-        "2. Symbol": "TTWO",
-        "3. Last Refreshed": "2025-10-31 15:00:00",
-        "4. Interval": "60min",
-        "5. Output Size": "Full size",
-        "6. Time Zone": "US/Eastern"
-    },
     "Time Series (60min)": {
         "2025-10-30 15:00:00": {
             "1. open": "252.7500",
@@ -973,6 +965,56 @@
             "3. low": "254.5500",
             "4. close": "256.1500",
             "5. volume": "111416"
+        },
+        "2025-11-03 15:00:00": {
+            "1. open": "253.7150",
+            "2. high": "255.7400",
+            "3. low": "253.7150",
+            "4. close": "255.7000",
+            "5. volume": "338395"
+        },
+        "2025-11-03 14:00:00": {
+            "1. open": "253.7900",
+            "2. high": "254.1187",
+            "3. low": "253.1000",
+            "4. close": "253.8041",
+            "5. volume": "116854"
+        },
+        "2025-11-03 13:00:00": {
+            "1. open": "253.4350",
+            "2. high": "253.9800",
+            "3. low": "252.5750",
+            "4. close": "253.8200",
+            "5. volume": "100971"
+        },
+        "2025-11-03 12:00:00": {
+            "1. open": "252.6300",
+            "2. high": "253.6250",
+            "3. low": "252.6100",
+            "4. close": "253.4650",
+            "5. volume": "132443"
+        },
+        "2025-11-03 11:00:00": {
+            "1. open": "253.3250",
+            "2. high": "254.5220",
+            "3. low": "252.2600",
+            "4. close": "252.6000",
+            "5. volume": "114023"
+        },
+        "2025-11-03 10:00:00": {
+            "1. open": "255.4500",
+            "2. high": "255.4900",
+            "3. low": "251.3250",
+            "4. close": "253.3500",
+            "5. volume": "312613"
         }
+    },
+    "Meta Data": {
+        "1. Information": "Intraday (60min) open, high, low, close prices and volume - DATA DELAYED BY 15 MINUTES",
+        "2. Symbol": "TTWO",
+        "3. Last Refreshed": "2025-11-03 15:00:00",
+        "4. Interval": "60min",
+        "5. Output Size": "Full size",
+        "6. Time Zone": "US/Eastern"
     }
 }

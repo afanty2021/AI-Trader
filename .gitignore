@@ -2,7 +2,7 @@ CLAUDE.md
 logs/
 data/*.json
 data/*.jsonl
-data/agent_data/
+# data/agent_data/
 __pycache__/
 *.pyc
 *.pyo

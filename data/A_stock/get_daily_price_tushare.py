@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, Optional
@@ -41,6 +42,70 @@ def calculate_batch_days(num_stocks: int, max_records: int = 6000) -> int:
     return max(1, max_records // num_stocks)
 
 
+def api_call_with_retry(api_func, pro_api_instance, max_retries: int = 3, retry_delay: int = 5, timeout: int = 120, **kwargs):
+    """Call tushare API with retry mechanism and timeout handling.
+    
+    Args:
+        api_func: The tushare API function to call
+        pro_api_instance: The tushare pro_api instance (needed to set timeout)
+        max_retries: Maximum number of retry attempts
+        retry_delay: Delay in seconds between retries
+        timeout: Request timeout in seconds
+        **kwargs: Arguments to pass to the API function
+        
+    Returns:
+        Result from the API call
+        
+    Raises:
+        Exception: If all retries fail
+    """
+    import requests
+    
+    # Set timeout for the pro_api instance's underlying requests session
+    if hasattr(pro_api_instance, 'api') and hasattr(pro_api_instance.api, 'timeout'):
+        pro_api_instance.api.timeout = timeout
+    
+    for attempt in range(1, max_retries + 1):
+        try:
+            result = api_func(**kwargs)
+            return result
+            
+        except (requests.exceptions.Timeout, requests.exceptions.ReadTimeout, 
+                requests.exceptions.ConnectionError) as e:
+            if attempt < max_retries:
+                wait_time = retry_delay * attempt
+                print(f"⚠️ 网络超时错误 (尝试 {attempt}/{max_retries})，等待 {wait_time} 秒后重试...")
+                print(f"错误详情: {str(e)}")
+                time.sleep(wait_time)
+            else:
+                print(f"❌ 所有重试尝试均失败")
+                raise
+        except Exception as e:
+            # Check if it's a timeout-related error in the error message
+            error_str = str(e).lower()
+            if 'timeout' in error_str or 'timed out' in error_str or 'read timeout' in error_str:
+                if attempt < max_retries:
+                    wait_time = retry_delay * attempt
+                    print(f"⚠️ 网络超时错误 (尝试 {attempt}/{max_retries})，等待 {wait_time} 秒后重试...")
+                    print(f"错误详情: {str(e)}")
+                    time.sleep(wait_time)
+                else:
+                    print(f"❌ 所有重试尝试均失败")
+                    raise
+            else:
+                # For other errors, also retry
+                if attempt < max_retries:
+                    wait_time = retry_delay * attempt
+                    print(f"⚠️ API 调用错误 (尝试 {attempt}/{max_retries})，等待 {wait_time} 秒后重试...")
+                    print(f"错误详情: {str(e)}")
+                    time.sleep(wait_time)
+                else:
+                    print(f"❌ 所有重试尝试均失败")
+                    raise
+    
+    raise Exception("所有重试尝试均失败")
+
+
 def get_daily_price_a_stock(
     index_code: str = "000016.SH",
     output_dir: Optional[Path] = None,
@@ -65,6 +130,10 @@ def get_daily_price_a_stock(
 
     ts.set_token(token)
     pro = ts.pro_api()
+    
+    # Set timeout for tushare API requests (increase to 120 seconds)
+    if hasattr(pro, 'api') and hasattr(pro.api, 'timeout'):
+        pro.api.timeout = 120
 
     # Get index constituents from last month
     index_start_date, index_end_date = get_last_month_dates()
@@ -73,7 +142,15 @@ def get_daily_price_a_stock(
     daily_end_date = datetime.now().strftime("%Y%m%d")
 
     try:
-        df = pro.index_weight(index_code=index_code, start_date=index_start_date, end_date=index_end_date)
+        print(f"正在获取指数成分股数据: {index_code} ({index_start_date} - {index_end_date})")
+        df = api_call_with_retry(
+            pro.index_weight,
+            pro_api_instance=pro,
+            index_code=index_code,
+            start_date=index_start_date,
+            end_date=index_end_date,
+            timeout=120
+        )
 
         # If API returns empty data, try to read from fallback CSV
         if df.empty:
@@ -97,17 +174,34 @@ def get_daily_price_a_stock(
 
         all_data = []
         current_start = start_dt
+        total_batches = ((end_dt - start_dt).days // batch_days) + 1
+        batch_num = 0
 
         while current_start <= end_dt:
             current_end = min(current_start + timedelta(days=batch_days - 1), end_dt)
 
             batch_start_str = current_start.strftime("%Y%m%d")
             batch_end_str = current_end.strftime("%Y%m%d")
+            batch_num += 1
 
-            df_batch = pro.daily(ts_code=code_str, start_date=batch_start_str, end_date=batch_end_str)
+            print(f"正在获取批次 {batch_num}/{total_batches}: {batch_start_str} - {batch_end_str}")
+            
+            df_batch = api_call_with_retry(
+                pro.daily,
+                pro_api_instance=pro,
+                ts_code=code_str,
+                start_date=batch_start_str,
+                end_date=batch_end_str,
+                timeout=120
+            )
 
             if not df_batch.empty:
                 all_data.append(df_batch)
+                print(f"✅ 批次 {batch_num} 获取成功，获得 {len(df_batch)} 条记录")
+
+            # Add delay between batches to avoid rate limiting
+            if current_start < end_dt:
+                time.sleep(1)  # 1 second delay between batches
 
             current_start = current_end + timedelta(days=1)
 
@@ -227,13 +321,25 @@ def get_index_daily_data(
 
     ts.set_token(token)
     pro = ts.pro_api()
+    
+    # Set timeout for tushare API requests (increase to 120 seconds)
+    if hasattr(pro, 'api') and hasattr(pro.api, 'timeout'):
+        pro.api.timeout = 120
 
     # Set end_date to today if not specified
     if end_date is None:
         end_date = datetime.now().strftime("%Y%m%d")
 
     try:
-        df = pro.index_daily(ts_code=index_code, start_date=start_date, end_date=end_date)
+        print(f"正在获取指数日线数据: {index_code} ({start_date} - {end_date})")
+        df = api_call_with_retry(
+            pro.index_daily,
+            pro_api_instance=pro,
+            ts_code=index_code,
+            start_date=start_date,
+            end_date=end_date,
+            timeout=120
+        )
 
         if df.empty:
             print(f"No index daily data found for {index_code}")
