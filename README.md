@@ -1,3 +1,11 @@
+
+
+<div align="center">
+  <picture>
+      <img src="./assets/AI-Trader-log.png" width="20%" style="border: none; box-shadow: none;">
+  </picture>
+</div >
+
 <div align="center">
 
 # 🚀 AI-Trader: Can AI Beat the Market?
