@@ -20,22 +20,24 @@ def get_market_type() -> str:
     """
     智能获取市场类型，支持多种检测方式：
     1. 优先从配置中读取 MARKET
-    2. 如果未设置，则根据 LOG_PATH 推断（agent_data_astock -> cn, agent_data -> us）
+    2. 如果未设置，则根据 LOG_PATH 推断（agent_data_astock -> cn, agent_data_crypto -> crypto, agent_data -> us）
     3. 最后默认为 us
-    
+
     Returns:
-        "cn" for A-shares market, "us" for US market
+        "cn" for A-shares market, "us" for US market, "crypto" for cryptocurrency market
     """
     # 方式1: 从配置读取
     market = get_config_value("MARKET", None)
-    if market in ["cn", "us"]:
+    if market in ["cn", "us", "crypto"]:
         return market
-    
+
     # 方式2: 根据 LOG_PATH 推断
     log_path = get_config_value("LOG_PATH", "./data/agent_data")
     if "astock" in log_path.lower() or "a_stock" in log_path.lower():
         return "cn"
-    
+    elif "crypto" in log_path.lower():
+        return "crypto"
+
     # 方式3: 默认为美股
     return "us"
 
@@ -202,7 +204,7 @@ def get_merged_file_path(market: str = "us") -> Path:
     """Get merged.jsonl path based on market type.
 
     Args:
-        market: Market type, "us" for US stocks or "cn" for A-shares
+        market: Market type, "us" for US stocks, "cn" for A-shares, "crypto" for cryptocurrencies
 
     Returns:
         Path object pointing to the merged.jsonl file
@@ -210,6 +212,8 @@ def get_merged_file_path(market: str = "us") -> Path:
     base_dir = Path(__file__).resolve().parents[1]
     if market == "cn":
         return base_dir / "data" / "A_stock" / "merged.jsonl"
+    elif market == "crypto":
+        return base_dir / "data" / "crypto" / "crypto_merged.jsonl"
     else:
         return base_dir / "data" / "merged.jsonl"
 
@@ -219,11 +223,15 @@ def is_trading_day(date: str, market: str = "us") -> bool:
 
     Args:
         date: Date string in "YYYY-MM-DD" format
-        market: Market type ("us" or "cn")
+        market: Market type ("us", "cn", or "crypto")
 
     Returns:
         True if the date exists in merged.jsonl (is a trading day), False otherwise
     """
+    # MVP assumption: crypto trades every day
+    if market == "crypto":
+        return True
+
     merged_file_path = get_merged_file_path(market)
 
     if not merged_file_path.exists():
@@ -236,9 +244,18 @@ def is_trading_day(date: str, market: str = "us") -> bool:
             for line in f:
                 try:
                     data = json.loads(line.strip())
+                    # Check for daily time series first
                     time_series = data.get("Time Series (Daily)", {})
                     if date in time_series:
                         return True
+
+                    # If no daily data, check for hourly data (e.g., "Time Series (60min)")
+                    for key, value in data.items():
+                        if key.startswith("Time Series") and isinstance(value, dict):
+                            # Check if any hourly timestamp starts with the date
+                            for timestamp in value.keys():
+                                if timestamp.startswith(date):
+                                    return True
                 except json.JSONDecodeError:
                     continue
             # If we get here, checked all stocks and date was not found in any
@@ -668,15 +685,24 @@ def get_today_init_position(today_date: str, signature: str) -> Dict[str, float]
         {symbol: weight} 的字典；若未找到对应日期，则返回空字典。
     """
     from tools.general_tools import get_config_value
+    import os
 
     base_dir = Path(__file__).resolve().parents[1]
 
     # Get log_path from config, default to "agent_data" for backward compatibility
     log_path = get_config_value("LOG_PATH", "./data/agent_data")
-    if log_path.startswith("./data/"):
-        log_path = log_path[7:]  # Remove "./data/" prefix
 
-    position_file = base_dir / "data" / log_path / signature / "position" / "position.jsonl"
+    # Handle different path formats:
+    # - If it's an absolute path (like temp directory), use it directly
+    # - If it's a relative path starting with "./data/", remove the prefix and prepend base_dir/data
+    # - Otherwise, treat as relative to base_dir/data
+    if os.path.isabs(log_path):
+        # Absolute path (like temp directory) - use directly
+        position_file = Path(log_path) / signature / "position" / "position.jsonl"
+    else:
+        if log_path.startswith("./data/"):
+            log_path = log_path[7:]  # Remove "./data/" prefix
+        position_file = base_dir / "data" / log_path / signature / "position" / "position.jsonl"
 #     position_file = base_dir / "data" / "agent_data" / signature / "position" / "position.jsonl"
 
     if not position_file.exists():
@@ -728,15 +754,24 @@ def get_latest_position(today_date: str, signature: str) -> Tuple[Dict[str, floa
           - max_id: 选中记录的最大 id；若未找到任何记录，则为 -1.
     """
     from tools.general_tools import get_config_value
+    import os
 
     base_dir = Path(__file__).resolve().parents[1]
 
     # Get log_path from config, default to "agent_data" for backward compatibility
     log_path = get_config_value("LOG_PATH", "./data/agent_data")
-    if log_path.startswith("./data/"):
-        log_path = log_path[7:]  # Remove "./data/" prefix
 
-    position_file = base_dir / "data" / log_path / signature / "position" / "position.jsonl"
+    # Handle different path formats:
+    # - If it's an absolute path (like temp directory), use it directly
+    # - If it's a relative path starting with "./data/", remove the prefix and prepend base_dir/data
+    # - Otherwise, treat as relative to base_dir/data
+    if os.path.isabs(log_path):
+        # Absolute path (like temp directory) - use directly
+        position_file = Path(log_path) / signature / "position" / "position.jsonl"
+    else:
+        if log_path.startswith("./data/"):
+            log_path = log_path[7:]  # Remove "./data/" prefix
+        position_file = base_dir / "data" / log_path / signature / "position" / "position.jsonl"
 
     if not position_file.exists():
         return {}, -1
@@ -828,15 +863,24 @@ def add_no_trade_record(today_date: str, signature: str):
     save_item["positions"] = current_position
 
     from tools.general_tools import get_config_value
+    import os
 
     base_dir = Path(__file__).resolve().parents[1]
 
     # Get log_path from config, default to "agent_data" for backward compatibility
     log_path = get_config_value("LOG_PATH", "./data/agent_data")
-    if log_path.startswith("./data/"):
-        log_path = log_path[7:]  # Remove "./data/" prefix
 
-    position_file = base_dir / "data" / log_path / signature / "position" / "position.jsonl"
+    # Handle different path formats:
+    # - If it's an absolute path (like temp directory), use it directly
+    # - If it's a relative path starting with "./data/", remove the prefix and prepend base_dir/data
+    # - Otherwise, treat as relative to base_dir/data
+    if os.path.isabs(log_path):
+        # Absolute path (like temp directory) - use directly
+        position_file = Path(log_path) / signature / "position" / "position.jsonl"
+    else:
+        if log_path.startswith("./data/"):
+            log_path = log_path[7:]  # Remove "./data/" prefix
+        position_file = base_dir / "data" / log_path / signature / "position" / "position.jsonl"
 
     with position_file.open("a", encoding="utf-8") as f:
         f.write(json.dumps(save_item) + "\n")
