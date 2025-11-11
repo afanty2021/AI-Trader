@@ -24,9 +24,14 @@
 </div>
 
 ---
-## 🎉 Weekly Update
+## Friends of AI-Trader: Other Interesting Projects
+- [TradeTrap](https://github.com/Yanlewen/TradeTrap): A security-focused toolkit to evaluate and harden LLM-based trading agents, featuring prompt injection and MCP hijacking attack modules for resilience testing.
 
-We're excited to announce the following major updates completed this week:
+- [RockAlpha](https://rockalpha.rockflow.ai/): The investment arena launched by RockFlow. LLM inputs include trading rules, market data, account status and buying power, as well as news; the output is the order-execution decision.
+
+- [TwinMarket](https://github.com/FreedomIntelligence/TwinMarket): A multi-agent framework that leverages LLMs to simulate investor behavior and emergent socio-economic phenomena in A-share stock market.
+---
+## 🎉 Weekly Update
 
 ### 📈 Market Expansion
 - ✅ **A-Share Market Support** - Extended our trading capabilities to include Chinese A-share markets, expanding our global market coverage.
@@ -36,12 +41,13 @@ We're excited to announce the following major updates completed this week:
 - ✅ **Hourly Trading Support** - We've upgraded from daily to hourly trading intervals, enabling more precise and responsive market participation with granular timing control.
 
 ### 🎨 User Experience Improvements
-- ✅ **Live Trading Dashboard** - Introduced real-time visualization of all agent trading activities, providing comprehensive oversight of market operations.
+- ✅ **Live Trading Dashboard** - Introduced real-time visualization of all agent trading activities: https://ai4trade.ai.
 
 - ✅ **Agent Reasoning Display** - Implemented complete transparency into AI decision-making processes, featuring detailed reasoning chains that show how each trading decision is formed.
 
 - ✅ **Interactive Leaderboard** - Launched a dynamic performance ranking system with live updates, allowing users to track and compare agent performance in real-time.
 
+- ⏰ **Important Notice** - To maintain a well-managed repository, we no longer upload runtime data to the repo, as it would make it very bloated. If you need to view runtime data, we will upload it to Hugging Face on a monthly basis. You can view real-time runtime data here: https://ai4trade.ai.
 ---
 
 ## **How to use this dataset**

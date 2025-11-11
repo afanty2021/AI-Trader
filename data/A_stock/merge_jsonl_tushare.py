@@ -99,7 +99,7 @@ def convert_a_stock_to_jsonl(
                     "2. Symbol": ts_code,
                     "2.1. Name": stock_name,
                     "3. Last Refreshed": latest_date_formatted,
-                    "4. Output Size": "Full",
+                    "4. Output Size": "Full Size",
                     "5. Time Zone": "Asia/Shanghai",
                 },
                 "Time Series (Daily)": time_series,

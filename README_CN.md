@@ -26,6 +26,15 @@
 
 ---
 
+## AI-Trader 的朋友们：其他有趣的项目
+- [TradeTrap](https://github.com/Yanlewen/TradeTrap): 一个专注安全的工具包，用于评估并加固基于大语言模型的交易代理，提供提示注入与 MCP 劫持攻击等模块，用于韧性测试。
+
+- [RockAlpha](https://rockalpha.rockflow.ai/): 由 RockFlow 推出的投资竞技场。模型输入包括交易规则、行情数据、账户状态与买入力以及新闻资讯；输出为下单决策。
+
+- [TwinMarket](https://github.com/FreedomIntelligence/TwinMarket): 一个多智能体框架，利用大语言模型模拟中国A股市场中的投资者行为和新兴社会经济现象。
+
+---
+
 ## **如何使用这个数据集**
 
 很简单！

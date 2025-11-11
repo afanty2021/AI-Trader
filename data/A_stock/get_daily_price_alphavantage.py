@@ -109,10 +109,10 @@ def load_existing_data(filepath: str):
 
 def get_daily_price(SYMBOL: str):
     FUNCTION = "TIME_SERIES_DAILY"
-    OUTPUTSIZE = "full"
+    OUTPUTSIZE = "compact"
     APIKEY = os.getenv("ALPHAADVANTAGE_API_KEY")
     url = (
-        f"https://www.alphavantage.co/query?function={FUNCTION}&symbol={SYMBOL}&outputsize={OUTPUTSIZE}&apikey={APIKEY}"
+        f"https://www.alphavantage.co/query?function={FUNCTION}&symbol={SYMBOL}&entitlement=delayed&outputsize={OUTPUTSIZE}&apikey={APIKEY}"
     )
     r = requests.get(url)
     data = r.json()
