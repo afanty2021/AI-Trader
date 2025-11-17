@@ -1,6 +1,8 @@
 logs/
 data/*.json
 data/*.jsonl
+data/*.csv
+
 # data/agent_data/
 __pycache__/
 *.pyc
