@@ -1,0 +1,715 @@
+{
+  "project_info": {
+    "name": "AI-Trader",
+    "description": "基于大语言模型的自主交易竞技平台",
+    "version": "1.0.0",
+    "scan_timestamp": "2025-11-17T16:00:59.000Z",
+    "last_updated": "2025-11-17T16:00:59.000Z",
+    "scan_round": 5,
+    "scan_type": "第五轮深度扫描 - 数据系统专项分析"
+  },
+  "scan_statistics": {
+    "total_files_found": 98,
+    "files_scanned": 81,
+    "deep_scan_files": 26,
+    "scan_coverage_rate": 0.827,
+    "lines_analyzed": 16473,
+    "modules_documented": 8,
+    "truncated": false
+  },
+  "architecture_overview": {
+    "pattern": "模块化分层架构 + MCP工具链 + 数据基础设施",
+    "core_layers": [
+      "程序入口层 (main.py)",
+      "配置管理层 (configs)",
+      "通用工具层 (tools)",
+      "MCP工具链层 (agent_tools)",
+      "AI代理层 (agent)",
+      "提示词管理层 (prompts)",
+      "数据基础设施层 (data)"
+    ]
+  },
+  "modules": [
+    {
+      "path": "main.py",
+      "name": "程序入口",
+      "type": "core_entry",
+      "status": "深度扫描完成",
+      "lines": 338,
+      "description": "程序主入口，负责代理生命周期管理、配置加载和多模型并发执行",
+      "key_functions": [
+        "get_agent_class() - 动态代理类加载",
+        "load_config() - 配置文件加载",
+        "main() - 主执行流程"
+      ],
+      "entry_points": [
+        {
+          "file": "main.py",
+          "function": "main()",
+          "description": "程序主入口点，支持命令行参数"
+        }
+      ],
+      "interfaces": [
+        "命令行参数支持配置文件路径",
+        "环境变量覆盖配置参数"
+      ],
+      "data_models": [
+        "配置文件JSON格式",
+        "运行时环境配置",
+        "代理类映射表"
+      ],
+      "dependencies": [
+        "python-dotenv",
+        "langchain",
+        "asyncio",
+        "importlib"
+      ]
+    },
+    {
+      "path": "configs",
+      "name": "配置管理",
+      "type": "configuration",
+      "status": "深度扫描完成",
+      "description": "多市场配置管理中心，支持美股、A股、加密货币的不同配置",
+      "key_files": [
+        "default_config.json - 美股默认配置",
+        "default_astock_config.json - A股专用配置",
+        "default_crypto_config.json - 加密货币配置",
+        "default_hour_config.json - 小时级交易配置",
+        "default_day_config.json - 日级交易配置"
+      ],
+      "data_models": [
+        "AgentConfig - 代理配置",
+        "ModelConfig - AI模型配置",
+        "MarketConfig - 市场配置",
+        "DateRange - 日期范围配置"
+      ],
+      "market_support": [
+        "US Stocks - NASDAQ 100",
+        "A-Shares - SSE 50",
+        "Cryptocurrency - BITWISE10"
+      ]
+    },
+    {
+      "path": "tools",
+      "name": "通用工具库",
+      "type": "utility",
+      "status": "深度扫描完成",
+      "description": "系统级工具函数库，提供配置管理、价格数据处理、性能分析等核心功能",
+      "modules": [
+        {
+          "file": "general_tools.py",
+          "status": "已扫描",
+          "functions": [
+            "get_config_value() - 配置读取",
+            "write_config_value() - 配置写入",
+            "extract_conversation() - 对话提取",
+            "_resolve_runtime_env_path() - 路径解析"
+          ]
+        },
+        {
+          "file": "price_tools.py",
+          "status": "深度扫描完成",
+          "functions": [
+            "get_market_type() - 市场类型检测",
+            "is_trading_day() - 交易日验证",
+            "get_all_trading_days() - 交易日历",
+            "get_stock_name_mapping() - 股票名称映射",
+            "format_price_dict_with_names() - 价格格式化",
+            "get_yesterday_open_and_close_price() - 历史价格获取",
+            "get_open_prices() - 开盘价获取",
+            "get_today_init_position() - 初始持仓获取"
+          ],
+          "data_sources": [
+            "NASDAQ 100 成分股定义",
+            "SSE 50 成分股定义",
+            "多市场数据路径管理"
+          ]
+        },
+        {
+          "file": "result_tools.py",
+          "status": "完整扫描 (949行)",
+          "functions": [
+            "calculate_all_metrics() - 综合性能分析",
+            "calculate_sharpe_ratio() - 夏普比率计算",
+            "calculate_max_drawdown() - 最大回撤分析",
+            "calculate_cumulative_return() - 累计收益",
+            "calculate_annualized_return() - 年化收益",
+            "calculate_volatility() - 波动率",
+            "calculate_win_rate() - 胜率分析",
+            "calculate_profit_loss_ratio() - 盈亏比",
+            "save_metrics_to_jsonl() - 数据持久化",
+            "print_performance_report() - 报告生成"
+          ],
+          "professional_features": [
+            "JSONL格式增量保存",
+            "历史记录查询",
+            "多货币符号支持",
+            "智能日期范围推断",
+            "专业金融指标计算"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agent_tools",
+      "name": "MCP工具链",
+      "type": "mcp_tools",
+      "status": "深度扫描完成",
+      "description": "基于Model Context Protocol的专业工具生态系统",
+      "tools": [
+        {
+          "file": "tool_trade.py",
+          "function": "股票交易工具",
+          "methods": ["buy()", "sell()", "get_positions()"]
+        },
+        {
+          "file": "tool_crypto_trade.py",
+          "function": "加密货币交易工具",
+          "methods": ["buy_crypto()", "sell_crypto()", "get_crypto_positions()"]
+        },
+        {
+          "file": "tool_get_price_local.py",
+          "function": "本地价格查询工具",
+          "features": ["多市场数据支持", "智能路径解析", "价格缓存"]
+        },
+        {
+          "file": "tool_jina_search.py",
+          "function": "Jina AI增强搜索工具",
+          "features": ["实时市场搜索", "智能内容提取"]
+        },
+        {
+          "file": "tool_alphavantage_news.py",
+          "function": "Alpha Vantage新闻工具",
+          "features": ["市场新闻", "公司资讯", "财经信息"]
+        },
+        {
+          "file": "tool_math.py",
+          "function": "数学计算工具",
+          "features": ["金融计算", "统计分析", "风险评估"]
+        }
+      ],
+      "service_management": {
+        "file": "start_mcp_services.py",
+        "ports": {
+          "MATH_HTTP_PORT": 8000,
+          "SEARCH_HTTP_PORT": 8001,
+          "TRADE_HTTP_PORT": 8002,
+          "GETPRICE_HTTP_PORT": 8003,
+          "CRYPTO_HTTP_PORT": 8005
+        }
+      }
+    },
+    {
+      "path": "agent",
+      "name": "AI代理实现",
+      "type": "ai_agents",
+      "status": "深度扫描完成",
+      "description": "专业化AI代理实现，支持不同市场的交易规则",
+      "agents": [
+        {
+          "file": "base_agent.py",
+          "type": "BaseAgent",
+          "market": "美股",
+          "features": ["MCP工具集成", "交易状态管理", "错误处理机制"],
+          "prompt_integration": "使用agent_prompt.py生成系统提示词"
+        },
+        {
+          "file": "base_agent_astock.py",
+          "type": "BaseAgentAStock",
+          "market": "A股",
+          "features": ["T+1交易规则", "人民币计价", "中文股票名称"],
+          "prompt_integration": "使用agent_prompt_astock.py生成中文系统提示词"
+        },
+        {
+          "file": "base_agent_crypto.py",
+          "type": "BaseAgentCrypto",
+          "market": "加密货币",
+          "features": ["24/7交易", "多币种支持", "实时数据处理"],
+          "prompt_integration": "使用agent_prompt_crypto.py生成加密货币专用提示词"
+        }
+      ]
+    },
+    {
+      "path": "prompts",
+      "name": "提示词管理",
+      "type": "prompt_system",
+      "status": "深度扫描完成",
+      "coverage_rate": 1.0,
+      "description": "AI代理提示词管理系统，支持多市场差异化和多AI模型适配",
+      "core_files": [
+        {
+          "file": "agent_prompt.py",
+          "market": "美股",
+          "language": "英文",
+          "lines": 97,
+          "features": ["基本面分析导向", "NASDAQ 100支持", "美元计价"]
+        },
+        {
+          "file": "agent_prompt_astock.py",
+          "market": "A股",
+          "language": "中文",
+          "lines": 135,
+          "features": ["T+1规则内置", "100股限制", "中文股票名称", "人民币计价"]
+        },
+        {
+          "file": "agent_prompt_crypto.py",
+          "market": "加密货币",
+          "language": "英文",
+          "lines": 100,
+          "features": ["24/7交易支持", "高波动性警告", "USDT计价"]
+        }
+      ],
+      "key_mechanisms": [
+        "动态数据注入 - 实时获取价格和持仓信息",
+        "市场规则内置 - 防止违规交易",
+        "STOP_SIGNAL统一控制 - <FINISH_SIGNAL>完成信号",
+        "多AI模型兼容性 - Claude/GPT/Qwen/DeepSeek/Gemini",
+        "模板化设计 - 易于扩展新市场"
+      ],
+      "ai_model_compatibility": {
+        "claude_series": "英文强势，安全约束强，适合美股和加密货币",
+        "gpt_series": "多语言平衡，通用性强，全市场适用",
+        "qwen_series": "中文优势，本土化好，A股市场首选",
+        "deepseek_series": "数理逻辑强，技术分析优势",
+        "gemini_series": "多模态能力，图文分析"
+      }
+    },
+    {
+      "path": "data",
+      "name": "数据基础设施",
+      "type": "data_infrastructure",
+      "status": "第五轮深度扫描完成",
+      "description": "多市场数据基础设施，提供统一的数据获取、处理、存储服务",
+      "data_sources": [
+        {
+          "market": "美股 (NASDAQ 100)",
+          "source": "Alpha Vantage API",
+          "symbols": 111,
+          "data_types": ["日线OHLCV", "小时级OHLCV"],
+          "api_limits": "5 calls/min, 500 calls/day"
+        },
+        {
+          "market": "A股 (SSE 50)",
+          "source": "Tushare API (主要) + Alpha Vantage (备用)",
+          "symbols": 50,
+          "data_types": ["个股日线", "指数数据", "成分股权重"],
+          "special_handling": ["T+1规则", "100股限制", "人民币计价"]
+        },
+        {
+          "market": "加密货币 (BITWISE10)",
+          "source": "Alpha Vantage API",
+          "symbols": 10,
+          "data_types": ["日线OHLCV"],
+          "special_handling": ["24/7交易", "USDT计价", "高波动性"]
+        }
+      ],
+      "core_scripts": [
+        {
+          "file": "get_daily_price.py",
+          "function": "美股日线数据获取",
+          "features": ["API频率控制", "QQQ特殊处理", "错误恢复"]
+        },
+        {
+          "file": "get_interdaily_price.py",
+          "function": "美股小时级数据获取",
+          "features": ["智能数据合并", "增量更新", "元数据管理"]
+        },
+        {
+          "file": "get_daily_price_tushare.py",
+          "function": "A股Tushare数据获取",
+          "features": ["分批处理(6000记录)", "重试机制", "CSV回退", "批量优化"],
+          "lines": 378
+        },
+        {
+          "file": "get_daily_price_crypto.py",
+          "function": "加密货币数据获取",
+          "features": ["符号标准化", "格式转换", "12秒间隔控制"]
+        },
+        {
+          "file": "merge_jsonl.py",
+          "function": "美股数据格式转换",
+          "features": ["字段重命名", "未来信息防护", "NASDAQ 100验证"]
+        },
+        {
+          "file": "merge_jsonl_tushare.py",
+          "function": "A股数据格式转换",
+          "features": ["股票名称映射", "成交量转换", "中文支持"]
+        },
+        {
+          "file": "merge_crypto_jsonl.py",
+          "function": "加密货币数据格式转换",
+          "features": ["符号修复(-USDT)", "备份机制", "验证逻辑"]
+        }
+      ],
+      "data_quality_assurance": [
+        "完整性检查 - 必填字段验证",
+        "格式验证 - JSON结构schema",
+        "业务逻辑验证 - 价格合理性、成交量非负",
+        "数据一致性验证 - 跨数据源交叉验证",
+        "智能错误恢复 - 指数退避重试、断点续传"
+      ],
+      "performance_optimizations": [
+        "批量API调用优化",
+        "分批处理大数据集",
+        "增量更新机制",
+        "流式文件处理",
+        "智能缓存策略"
+      ],
+      "technical_highlights": [
+        "多数据源融合架构",
+        "智能增量更新机制",
+        "多时区支持",
+        "统一格式标准化",
+        "高性能分批处理"
+      ]
+    },
+    {
+      "path": "scripts",
+      "name": "自动化脚本",
+      "type": "automation",
+      "status": "深度扫描完成",
+      "description": "系统启动和自动化脚本集合，提供一键式多市场数据准备",
+      "scripts": [
+        {
+          "file": "main_step1.sh",
+          "market": "美股",
+          "function": "美股数据准备",
+          "commands": ["get_interdaily_price.py", "merge_jsonl.py"]
+        },
+        {
+          "file": "main_a_stock_step1.sh",
+          "market": "A股",
+          "function": "A股数据准备",
+          "commands": ["get_daily_price_tushare.py", "merge_jsonl_tushare.py"],
+          "fallback": ["get_daily_price_alphavantage.py", "merge_jsonl_alphavantage.py"]
+        },
+        {
+          "file": "main_crypto_step1.sh",
+          "market": "加密货币",
+          "function": "加密货币数据准备",
+          "commands": ["get_daily_price_crypto.py", "merge_crypto_jsonl.py"]
+        }
+      ]
+    }
+  ],
+  "dependencies": {
+    "python_version": ">=3.10",
+    "core_libraries": [
+      {
+        "name": "langchain",
+        "version": "1.0.2",
+        "purpose": "LLM集成框架"
+      },
+      {
+        "name": "langchain-openai",
+        "version": "1.0.1",
+        "purpose": "OpenAI模型集成"
+      },
+      {
+        "name": "langchain-mcp-adapters",
+        "version": ">=0.1.0",
+        "purpose": "MCP协议适配"
+      },
+      {
+        "name": "fastmcp",
+        "version": "2.12.5",
+        "purpose": "MCP工具快速实现"
+      },
+      {
+        "name": "tushare",
+        "purpose": "A股数据API",
+        "features": ["专业版支持", "分批处理优化"]
+      },
+      {
+        "name": "python-dotenv",
+        "purpose": "环境变量管理"
+      },
+      {
+        "name": "pandas",
+        "version": ">=1.5.0",
+        "purpose": "数据处理和分析"
+      },
+      {
+        "name": "requests",
+        "version": ">=2.28.0",
+        "purpose": "HTTP请求处理"
+      }
+    ],
+    "external_apis": [
+      {
+        "name": "Alpha Vantage API",
+        "purpose": "美股和加密货币数据",
+        "limits": "5 calls/minute, 500 calls/day",
+        "data_types": ["OHLCV", "Intraday", "Digital Currency"]
+      },
+      {
+        "name": "Tushare API",
+        "purpose": "A股市场数据",
+        "limits": "基于积分等级",
+        "features": ["专业版数据", "批量查询", "分页支持"]
+      },
+      {
+        "name": "Jina AI API",
+        "purpose": "智能搜索服务",
+        "features": ["实时搜索", "内容提取"]
+      }
+    ]
+  },
+  "market_support": {
+    "us_stocks": {
+      "market": "NASDAQ 100",
+      "initial_capital": 10000.0,
+      "currency": "USD",
+      "symbols": 111,
+      "data_coverage": ["日线", "小时级"],
+      "trading_hours": "美股交易时间",
+      "prompt_support": "agent_prompt.py (英文，基本面分析)"
+    },
+    "a_shares": {
+      "market": "SSE 50",
+      "initial_capital": 100000.0,
+      "currency": "CNY",
+      "symbols": 50,
+      "data_sources": ["Tushare (主要)", "Alpha Vantage (备用)"],
+      "trading_rules": ["T+1交易规则", "100股手数限制"],
+      "prompt_support": "agent_prompt_astock.py (中文，本土化规则)",
+      "weight_data": "sse_50_weight.csv (成分股权重)"
+    },
+    "cryptocurrency": {
+      "market": "BITWISE10",
+      "initial_capital": 50000.0,
+      "currency": "USDT",
+      "symbols": 10,
+      "crypto_list": ["BTC", "ETH", "XRP", "SOL", "ADA", "SUI", "LINK", "AVAX", "LTC", "DOT"],
+      "trading_hours": "24/7交易",
+      "prompt_support": "agent_prompt_crypto.py (高波动性警告)",
+      "symbol_standard": "-USDT后缀标准化"
+    }
+  },
+  "testing_status": {
+    "unit_tests": {
+      "status": "缺失",
+      "coverage": 0,
+      "recommendation": "急需补充核心功能单元测试"
+    },
+    "integration_tests": {
+      "status": "缺失",
+      "coverage": 0,
+      "recommendation": "需要系统集成测试框架"
+    },
+    "api_tests": {
+      "status": "缺失",
+      "coverage": 0,
+      "recommendation": "外部API集成测试"
+    },
+    "performance_tests": {
+      "status": "缺失",
+      "coverage": 0,
+      "recommendation": "并发和大数据量处理性能测试"
+    },
+    "data_quality_tests": {
+      "status": "部分实现",
+      "coverage": 0.3,
+      "features": ["内置数据验证", "格式检查", "错误处理"],
+      "recommendation": "完善数据质量测试框架"
+    }
+  },
+  "quality_metrics": {
+    "code_quality": {
+      "static_analysis": "未实施",
+      "code_style": "遵循PEP 8",
+      "type_annotation": "部分使用",
+      "documentation": "良好",
+      "error_handling": "健壮"
+    },
+    "architecture_quality": {
+      "modularity": "优秀",
+      "extensibility": "优秀",
+      "maintainability": "良好",
+      "testability": "需要改进",
+      "scalability": "良好"
+    },
+    "production_readiness": {
+      "monitoring": "基础实现",
+      "logging": "完整实现",
+      "error_handling": "健壮",
+      "security": "基础实践",
+      "data_quality": "完善",
+      "performance": "优化"
+    }
+  },
+  "data_system_analysis": {
+    "overall_quality": "优秀",
+    "architecture_strengths": [
+      "多市场统一数据架构设计",
+      "智能增量更新机制",
+      "多数据源融合和容错",
+      "分批处理和性能优化",
+      "数据质量保证体系",
+      "错误恢复和重试机制"
+    ],
+    "technical_excellence": [
+      "API频率智能控制 - 不同数据源差异化处理",
+      "分批处理算法 - 基于6000记录限制的动态分批",
+      "数据格式标准化 - 统一JSONL格式跨市场兼容",
+      "智能数据合并 - 增量更新避免重复获取",
+      "符号标准化 - 加密货币-USDT后缀统一",
+      "多时区支持 - 美股/A股/加密货币时区处理"
+    ],
+    "scalability_features": [
+      "批量API调用优化",
+      "大数据集分批处理",
+      "流式文件处理",
+      "内存优化策略",
+      "增量数据更新"
+    ],
+    "reliability_mechanisms": [
+      "多数据源备份策略",
+      "指数退避重试机制",
+      "断点续传支持",
+      "数据完整性验证",
+      "错误恢复和回退"
+    ]
+  },
+  "gaps_and_recommendations": {
+    "critical_gaps": [
+      {
+        "area": "测试体系",
+        "priority": "高",
+        "description": "完全缺失单元测试和集成测试",
+        "recommendation": "建立完整的测试框架，目标覆盖率80%+"
+      },
+      {
+        "area": "监控告警",
+        "priority": "中",
+        "description": "缺少系统级监控和告警机制",
+        "recommendation": "集成Prometheus/Grafana监控体系"
+      },
+      {
+        "area": "文档完善",
+        "priority": "中",
+        "description": "API文档和用户手册需要完善",
+        "recommendation": "使用Sphinx生成API文档"
+      }
+    ],
+    "data_system_gaps": [
+      {
+        "area": "数据测试",
+        "priority": "中",
+        "description": "数据获取和处理函数缺少专门测试",
+        "recommendation": "建立数据质量测试框架，覆盖API集成和转换逻辑"
+      },
+      {
+        "area": "性能监控",
+        "priority": "低",
+        "description": "数据处理性能指标监控不足",
+        "recommendation": "添加API响应时间、处理延迟等性能监控"
+      }
+    ],
+    "next_scan_priorities": [
+      "安全审计 - 交易安全和资金保护机制审查",
+      "扩展性分析 - 新市场和新策略支持框架评估",
+      "性能瓶颈分析 - 大数据量处理和并发优化",
+      "CI/CD集成 - 自动化测试和部署流水线"
+    ],
+    "improvement_suggestions": [
+      "建立CI/CD流水线，自动化测试和部署",
+      "添加代码质量检查工具(pylint, mypy)",
+      "实现配置热重载机制",
+      "增强安全防护机制",
+      "实现提示词效果评估和优化系统",
+      "建立数据质量评分体系"
+    ]
+  },
+  "coverage_analysis": {
+    "by_module": {
+      "main.py": 1.0,
+      "tools": 1.0,
+      "agent_tools": 1.0,
+      "configs": 1.0,
+      "agent": 1.0,
+      "scripts": 1.0,
+      "prompts": 1.0,
+      "data": 0.95
+    },
+    "by_functionality": {
+      "core_trading_logic": 0.95,
+      "data_processing": 0.95,
+      "data_quality_assurance": 0.90,
+      "configuration_management": 1.0,
+      "mcp_toolchain": 1.0,
+      "ai_agents": 0.9,
+      "prompt_system": 1.0,
+      "testing_framework": 0.0,
+      "monitoring": 0.3
+    }
+  },
+  "production_readiness": {
+    "overall_score": 0.85,
+    "strengths": [
+      "模块化架构设计优秀",
+      "MCP工具链实现完整",
+      "多市场支持能力强",
+      "配置管理灵活完善",
+      "性能分析功能专业",
+      "提示词系统设计优秀",
+      "AI模型兼容性强",
+      "数据基础设施健全",
+      "数据质量保证完善"
+    ],
+    "weaknesses": [
+      "测试体系完全缺失",
+      "监控告警机制不足",
+      "文档需要进一步完善",
+      "缺少CI/CD自动化",
+      "安全审计有待加强"
+    ],
+    "deployment_recommendations": [
+      "优先建立测试体系",
+      "完善监控和日志系统",
+      "实施安全加固措施",
+      "建立运维流程和规范",
+      "优化提示词效果评估机制",
+      "建立数据质量监控体系"
+    ]
+  },
+  "file_manifest": {
+    "total_python_files": 98,
+    "configuration_files": 6,
+    "documentation_files": 10,
+    "script_files": 10,
+    "data_files": "多目录结构",
+    "scanned_files": 81,
+    "deep_scanned_files": 26,
+    "total_lines_analyzed": 16473,
+    "ignored_files": [
+      "__pycache__",
+      "*.pyc",
+      "logs/",
+      "*.log",
+      "data/*.json",
+      "data/*.jsonl",
+      ".env",
+      "runtime_env.json"
+    ]
+  },
+  "scan_progress": {
+    "completed_rounds": 5,
+    "target_coverage": 0.85,
+    "current_coverage": 0.827,
+    "major_achievements": [
+      "完成了数据系统深度分析",
+      "揭示了优秀的数据架构设计",
+      "识别了多市场数据处理的技术亮点",
+      "完善了数据质量保证机制文档"
+    ],
+    "remaining_work": [
+      "安全审计和风险评估",
+      "扩展性框架评估",
+      "性能瓶颈优化分析",
+      "CI/CD集成方案"
+    ],
+    "estimated_completion_rounds": 1
+  }
+}
