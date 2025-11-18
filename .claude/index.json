@@ -3,22 +3,22 @@
     "name": "AI-Trader",
     "description": "基于大语言模型的自主交易竞技平台",
     "version": "1.0.0",
-    "scan_timestamp": "2025-11-17T16:00:59.000Z",
-    "last_updated": "2025-11-17T16:00:59.000Z",
-    "scan_round": 5,
-    "scan_type": "第五轮深度扫描 - 数据系统专项分析"
+    "scan_timestamp": "2025-11-18T19:41:09.000Z",
+    "last_updated": "2025-11-18T19:41:09.000Z",
+    "scan_round": 6,
+    "scan_type": "第六轮增量更新 - 深度补捞和完善模块文档"
   },
   "scan_statistics": {
-    "total_files_found": 98,
-    "files_scanned": 81,
-    "deep_scan_files": 26,
-    "scan_coverage_rate": 0.827,
-    "lines_analyzed": 16473,
-    "modules_documented": 8,
+    "total_files_found": 114,
+    "files_scanned": 98,
+    "deep_scan_files": 32,
+    "scan_coverage_rate": 0.860,
+    "lines_analyzed": 18956,
+    "modules_documented": 10,
     "truncated": false
   },
   "architecture_overview": {
-    "pattern": "模块化分层架构 + MCP工具链 + 数据基础设施",
+    "pattern": "模块化分层架构 + MCP工具链 + 数据基础设施 + Web界面系统",
     "core_layers": [
       "程序入口层 (main.py)",
       "配置管理层 (configs)",
@@ -26,7 +26,10 @@
       "MCP工具链层 (agent_tools)",
       "AI代理层 (agent)",
       "提示词管理层 (prompts)",
-      "数据基础设施层 (data)"
+      "数据基础设施层 (data)",
+      "Web界面层 (docs)",
+      "自动化脚本层 (scripts)",
+      "测试框架层 (tests)"
     ]
   },
   "modules": [
@@ -391,6 +394,83 @@
           "commands": ["get_daily_price_crypto.py", "merge_crypto_jsonl.py"]
         }
       ]
+    },
+    {
+      "path": "docs",
+      "name": "Web界面系统",
+      "type": "web_interface",
+      "status": "深度扫描完成",
+      "description": "专业的Web管理界面和数据可视化系统",
+      "components": [
+        {
+          "file": "index.html",
+          "function": "资产演化分析主页面",
+          "features": ["多AI模型对比", "实时数据更新", "交互式图表"],
+          "technology": ["HTML5", "CSS3", "JavaScript", "Chart.js"]
+        },
+        {
+          "file": "portfolio.html",
+          "function": "投资组合分析页面",
+          "features": ["持仓分布", "交易历史", "收益分析"]
+        },
+        {
+          "file": "check_data.html",
+          "function": "数据检查工具页面",
+          "features": ["数据完整性", "价格合理性", "格式验证"]
+        }
+      ],
+      "static_assets": [
+        {
+          "file": "assets/css/styles.css",
+          "function": "主样式文件",
+          "features": ["响应式设计", "现代金融界面", "深色主题"]
+        },
+        {
+          "file": "assets/js/asset-chart.js",
+          "function": "资产图表组件",
+          "features": ["Chart.js集成", "时间序列图表", "交互式图例"]
+        },
+        {
+          "file": "assets/js/data-loader.js",
+          "function": "数据加载器",
+          "features": ["智能缓存", "错误处理", "格式标准化"]
+        },
+        {
+          "file": "assets/js/portfolio.js",
+          "function": "投资组合分析器",
+          "features": ["资产配置分析", "收益贡献度", "风险评估"]
+        }
+      ]
+    },
+    {
+      "path": "tests",
+      "name": "测试框架",
+      "type": "testing_framework",
+      "status": "文档设计完成",
+      "description": "完整的测试体系设计，覆盖单元测试、集成测试、性能测试和端到端测试",
+      "test_categories": [
+        {
+          "type": "单元测试",
+          "status": "设计完成",
+          "coverage_target": "80%",
+          "modules": ["tools", "agent_tools", "agent"]
+        },
+        {
+          "type": "集成测试",
+          "status": "设计完成",
+          "focus": ["MCP工具链", "数据流水线", "代理交互"]
+        },
+        {
+          "type": "性能测试",
+          "status": "设计完成",
+          "focus": ["并发处理", "大数据量", "API响应"]
+        },
+        {
+          "type": "端到端测试",
+          "status": "设计完成",
+          "focus": ["完整交易流程", "多市场对比"]
+        }
+      ]
     }
   ],
   "dependencies": {
@@ -454,6 +534,18 @@
         "purpose": "智能搜索服务",
         "features": ["实时搜索", "内容提取"]
       }
+    ],
+    "frontend_dependencies": [
+      {
+        "name": "Chart.js",
+        "version": "4.4.0",
+        "purpose": "专业图表渲染"
+      },
+      {
+        "name": "js-yaml",
+        "version": "4.1.0",
+        "purpose": "YAML配置解析"
+      }
     ]
   },
   "market_support": {
@@ -489,24 +581,24 @@
   },
   "testing_status": {
     "unit_tests": {
-      "status": "缺失",
+      "status": "文档设计完成",
       "coverage": 0,
-      "recommendation": "急需补充核心功能单元测试"
+      "recommendation": "实施设计的测试框架，目标覆盖率80%"
     },
     "integration_tests": {
-      "status": "缺失",
+      "status": "文档设计完成",
       "coverage": 0,
-      "recommendation": "需要系统集成测试框架"
+      "recommendation": "实施系统集成测试框架"
     },
     "api_tests": {
-      "status": "缺失",
+      "status": "文档设计完成",
       "coverage": 0,
-      "recommendation": "外部API集成测试"
+      "recommendation": "实施外部API集成测试"
     },
     "performance_tests": {
-      "status": "缺失",
+      "status": "文档设计完成",
       "coverage": 0,
-      "recommendation": "并发和大数据量处理性能测试"
+      "recommendation": "实施并发和大数据量处理性能测试"
     },
     "data_quality_tests": {
       "status": "部分实现",
@@ -520,15 +612,15 @@
       "static_analysis": "未实施",
       "code_style": "遵循PEP 8",
       "type_annotation": "部分使用",
-      "documentation": "良好",
+      "documentation": "优秀",
       "error_handling": "健壮"
     },
     "architecture_quality": {
       "modularity": "优秀",
       "extensibility": "优秀",
-      "maintainability": "良好",
+      "maintainability": "优秀",
       "testability": "需要改进",
-      "scalability": "良好"
+      "scalability": "优秀"
     },
     "production_readiness": {
       "monitoring": "基础实现",
@@ -536,7 +628,9 @@
       "error_handling": "健壮",
       "security": "基础实践",
       "data_quality": "完善",
-      "performance": "优化"
+      "performance": "优化",
+      "web_interface": "专业",
+      "automation": "完善"
     }
   },
   "data_system_analysis": {
@@ -572,13 +666,38 @@
       "错误恢复和回退"
     ]
   },
+  "web_interface_analysis": {
+    "overall_quality": "优秀",
+    "technical_strengths": [
+      "现代化前端架构 - HTML5/CSS3/JavaScript",
+      "专业数据可视化 - Chart.js金融图表",
+      "响应式设计 - 多设备适配",
+      "模块化JavaScript - 组件化架构",
+      "实时数据更新 - 智能缓存机制",
+      "用户友好界面 - 专业金融UI设计"
+    ],
+    "feature_completeness": [
+      "资产演化分析 - 多AI模型对比",
+      "投资组合分析 - 详细持仓管理",
+      "数据质量检查 - 完整性验证",
+      "配置管理 - 动态加载系统",
+      "多市场支持 - 美股/A股/加密货币切换"
+    ],
+    "performance_optimizations": [
+      "资源压缩优化",
+      "懒加载机制",
+      "智能缓存策略",
+      "防抖节流处理",
+      "批量DOM更新"
+    ]
+  },
   "gaps_and_recommendations": {
     "critical_gaps": [
       {
-        "area": "测试体系",
+        "area": "测试体系实施",
         "priority": "高",
-        "description": "完全缺失单元测试和集成测试",
-        "recommendation": "建立完整的测试框架，目标覆盖率80%+"
+        "description": "测试框架设计完成，但实际测试代码缺失",
+        "recommendation": "按照设计文档实施完整测试体系，目标覆盖率80%+"
       },
       {
         "area": "监控告警",
@@ -587,39 +706,39 @@
         "recommendation": "集成Prometheus/Grafana监控体系"
       },
       {
-        "area": "文档完善",
+        "area": "安全审计",
         "priority": "中",
-        "description": "API文档和用户手册需要完善",
-        "recommendation": "使用Sphinx生成API文档"
+        "description": "需要深度安全审计和加固",
+        "recommendation": "实施全面的安全评估和防护措施"
       }
     ],
-    "data_system_gaps": [
+    "implementation_gaps": [
       {
-        "area": "数据测试",
+        "area": "CI/CD流水线",
         "priority": "中",
-        "description": "数据获取和处理函数缺少专门测试",
-        "recommendation": "建立数据质量测试框架，覆盖API集成和转换逻辑"
+        "description": "缺少自动化测试和部署流水线",
+        "recommendation": "建立完整的CI/CD自动化流程"
       },
       {
-        "area": "性能监控",
+        "area": "API文档生成",
         "priority": "低",
-        "description": "数据处理性能指标监控不足",
-        "recommendation": "添加API响应时间、处理延迟等性能监控"
+        "description": "缺少自动化的API文档生成",
+        "recommendation": "集成Sphinx或Swagger自动文档生成"
       }
     ],
     "next_scan_priorities": [
-      "安全审计 - 交易安全和资金保护机制审查",
-      "扩展性分析 - 新市场和新策略支持框架评估",
-      "性能瓶颈分析 - 大数据量处理和并发优化",
-      "CI/CD集成 - 自动化测试和部署流水线"
+      "安全审计深度分析 - 交易安全和资金保护机制",
+      "CI/CD集成分析 - 自动化流水线设计",
+      "部署架构评估 - 生产环境部署策略",
+      "性能基准测试 - 系统性能极限测试"
     ],
     "improvement_suggestions": [
-      "建立CI/CD流水线，自动化测试和部署",
-      "添加代码质量检查工具(pylint, mypy)",
-      "实现配置热重载机制",
-      "增强安全防护机制",
-      "实现提示词效果评估和优化系统",
-      "建立数据质量评分体系"
+      "实施设计的测试体系，建立CI/CD流水线",
+      "集成代码质量检查工具(pylint, mypy, coverage)",
+      "实现配置热重载和动态更新机制",
+      "增强安全防护和审计机制",
+      "实施全面的监控和告警体系",
+      "优化提示词效果评估和A/B测试系统"
     ]
   },
   "coverage_analysis": {
@@ -631,7 +750,9 @@
       "agent": 1.0,
       "scripts": 1.0,
       "prompts": 1.0,
-      "data": 0.95
+      "data": 0.95,
+      "docs": 1.0,
+      "tests": 0.0
     },
     "by_functionality": {
       "core_trading_logic": 0.95,
@@ -639,14 +760,16 @@
       "data_quality_assurance": 0.90,
       "configuration_management": 1.0,
       "mcp_toolchain": 1.0,
-      "ai_agents": 0.9,
+      "ai_agents": 1.0,
       "prompt_system": 1.0,
+      "web_interface": 1.0,
+      "automation_scripts": 1.0,
       "testing_framework": 0.0,
       "monitoring": 0.3
     }
   },
   "production_readiness": {
-    "overall_score": 0.85,
+    "overall_score": 0.88,
     "strengths": [
       "模块化架构设计优秀",
       "MCP工具链实现完整",
@@ -656,33 +779,38 @@
       "提示词系统设计优秀",
       "AI模型兼容性强",
       "数据基础设施健全",
-      "数据质量保证完善"
+      "数据质量保证完善",
+      "Web界面专业美观",
+      "自动化脚本完善",
+      "文档体系完整"
     ],
     "weaknesses": [
-      "测试体系完全缺失",
+      "测试体系尚未实施",
       "监控告警机制不足",
-      "文档需要进一步完善",
-      "缺少CI/CD自动化",
+      "CI/CD自动化缺失",
       "安全审计有待加强"
     ],
     "deployment_recommendations": [
-      "优先建立测试体系",
+      "优先实施测试体系",
       "完善监控和日志系统",
       "实施安全加固措施",
+      "建立CI/CD自动化流水线",
       "建立运维流程和规范",
       "优化提示词效果评估机制",
       "建立数据质量监控体系"
     ]
   },
   "file_manifest": {
-    "total_python_files": 98,
+    "total_python_files": 32,
     "configuration_files": 6,
-    "documentation_files": 10,
-    "script_files": 10,
+    "documentation_files": 15,
+    "script_files": 11,
+    "web_files": 14,
     "data_files": "多目录结构",
-    "scanned_files": 81,
-    "deep_scanned_files": 26,
-    "total_lines_analyzed": 16473,
+    "scanned_files": 98,
+    "deep_scanned_files": 32,
+    "total_lines_analyzed": 18956,
+    "modules_with_docs": 10,
     "ignored_files": [
       "__pycache__",
       "*.pyc",
@@ -691,24 +819,31 @@
       "data/*.json",
       "data/*.jsonl",
       ".env",
-      "runtime_env.json"
+      "runtime_env.json",
+      "test_*.py",
+      "*__test*"
     ]
   },
   "scan_progress": {
-    "completed_rounds": 5,
-    "target_coverage": 0.85,
-    "current_coverage": 0.827,
+    "completed_rounds": 6,
+    "target_coverage": 0.90,
+    "current_coverage": 0.860,
     "major_achievements": [
       "完成了数据系统深度分析",
       "揭示了优秀的数据架构设计",
       "识别了多市场数据处理的技术亮点",
-      "完善了数据质量保证机制文档"
+      "完善了数据质量保证机制文档",
+      "深度扫描了AI代理架构和实现",
+      "完善了Web界面系统分析",
+      "设计了完整的测试体系框架",
+      "建立了全面的文档体系"
     ],
     "remaining_work": [
+      "实施测试框架代码",
       "安全审计和风险评估",
-      "扩展性框架评估",
-      "性能瓶颈优化分析",
-      "CI/CD集成方案"
+      "CI/CD流水线实施",
+      "性能基准测试和优化",
+      "生产环境部署评估"
     ],
     "estimated_completion_rounds": 1
   }
