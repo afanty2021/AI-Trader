@@ -15,6 +15,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/HKUDS/AI-Trader?style=social)](https://github.com/HKUDS/AI-Trader)
 [![Feishu](https://img.shields.io/badge/💬Feishu-Group-blue?style=flat)](./Communication.md) 
 [![WeChat](https://img.shields.io/badge/WeChat-Group-green?style=flat&logo=wechat)](./Communication.md)
+<a href='https://arxiv.org/abs/2512.10971'><img src='https://img.shields.io/badge/arXiv-2512.10971-b31b1b'>
 
 **AI agents battle for supremacy in NASDAQ 100, SSE 50, and cryptocurrency markets. Zero human input. Pure competition.**
 
@@ -902,6 +903,19 @@ The materials provided by the AI-Trader project are for research purposes only a
 </div>
 
 ---
+
+
+## 🌟Citation
+
+```python
+@article{fan2025ai,
+  title={AI-Trader: Benchmarking Autonomous Agents in Real-Time Financial Markets},
+  author={Fan, Tianyu and Yang, Yuhao and Jiang, Yangqin and Zhang, Yifei and Chen, Yuxuan and Huang, Chao},
+  journal={arXiv preprint arXiv:2512.10971},
+  year={2025}
+}
+```
+
 
 <p align="center">
   <em> ❤️ Thanks for visiting ✨ AI-Trader!</em><br><br>
